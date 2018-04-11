@@ -22,6 +22,7 @@ import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
+import android.util.Log;
 
 import java.util.Objects;
 
@@ -38,6 +39,7 @@ import example.saunak.com.demoarchitecture.model.Resource;
  * @param <RequestType>
  */
 public abstract class NetworkBoundResource<ResultType, RequestType> {
+    public static String TAG = NetworkBoundResource.class.getSimpleName();
     private final AppExecutors appExecutors;
 
     private final MediatorLiveData<Resource<ResultType>> result = new MediatorLiveData<>();
@@ -48,6 +50,7 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
         result.setValue(Resource.loading(null));
         final LiveData<ResultType> dbSource = loadFromDb();
         result.addSource(dbSource, data -> {
+            Log.d(TAG,"Inside lambda --> adding data source from DB or Network");
             result.removeSource(dbSource);
             if (shouldFetch(data)) {
                 fetchFromNetwork(dbSource);
@@ -65,6 +68,7 @@ public abstract class NetworkBoundResource<ResultType, RequestType> {
     }
 
     private void fetchFromNetwork(final LiveData<ResultType> dbSource) {
+        Log.d(TAG,"Starting data fetch from network");
         LiveData<ApiResponse<RequestType>> apiResponse = createCall();
         // we re-attach dbSource as a new source, it will dispatch its latest value quickly
         result.addSource(dbSource, newData -> setValue(Resource.loading(newData)));

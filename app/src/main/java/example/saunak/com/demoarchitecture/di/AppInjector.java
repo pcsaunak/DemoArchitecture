@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 
 import dagger.android.AndroidInjection;
 import dagger.android.HasActivityInjector;
@@ -58,9 +59,10 @@ public class AppInjector {
     }
 
     private static void handleActivity(Activity activity){
-        if(activity instanceof HasActivityInjector){
+//        if(activity instanceof HasActivityInjector){
+            Log.d("AppInjector","Executing Android injection");
             AndroidInjection.inject(activity);
-        }
+//        }
         if(activity instanceof FragmentActivity){
             ((FragmentActivity) activity).getSupportFragmentManager()
                     .registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {

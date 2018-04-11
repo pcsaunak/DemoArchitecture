@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,7 @@ import example.saunak.com.demoarchitecture.ui.commons.PostListAdapter;
 import example.saunak.com.demoarchitecture.util.AutoClearedValue;
 
 public class PostsFragment extends Fragment implements Injectable {
-
+    public static String TAG = PostsFragment.class.getSimpleName();
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
@@ -49,6 +50,7 @@ public class PostsFragment extends Fragment implements Injectable {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        Log.d(TAG,"Inside onActivityCreated");
         postsViewModel = ViewModelProviders.of(this,viewModelFactory).get(PostsViewModel.class);
         initRecyclerView();
 
